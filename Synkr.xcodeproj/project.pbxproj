@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		47D9D0972E3789030042AA8C /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = 47D9D0962E3789030042AA8C /* SpotifyiOS */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		47D9D0472E377E080042AA8C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		47D9D0502E377E080042AA8C /* SynkrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SynkrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		47D9D0892E3782520042AA8C /* Exceptions for "Synkr" folder in "Synkr" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 47D9D0352E377E050042AA8C /* Synkr */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		47D9D0382E377E050042AA8C /* Synkr */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				47D9D0892E3782520042AA8C /* Exceptions for "Synkr" folder in "Synkr" target */,
+			);
 			path = Synkr;
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47D9D0972E3789030042AA8C /* SpotifyiOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +130,7 @@
 			);
 			name = Synkr;
 			packageProductDependencies = (
+				47D9D0962E3789030042AA8C /* SpotifyiOS */,
 			);
 			productName = Synkr;
 			productReference = 47D9D0362E377E050042AA8C /* Synkr.app */;
@@ -195,6 +214,9 @@
 			);
 			mainGroup = 47D9D02D2E377E050042AA8C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				47D9D0952E3789030042AA8C /* XCRemoteSwiftPackageReference "ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 47D9D0372E377E050042AA8C /* Products */;
 			projectDirPath = "";
@@ -398,6 +420,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Synkr/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Synkr/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -426,6 +449,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Synkr/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Synkr/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -552,6 +576,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		47D9D0952E3789030042AA8C /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spotify/ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		47D9D0962E3789030042AA8C /* SpotifyiOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47D9D0952E3789030042AA8C /* XCRemoteSwiftPackageReference "ios-sdk" */;
+			productName = SpotifyiOS;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 47D9D02E2E377E050042AA8C /* Project object */;
 }

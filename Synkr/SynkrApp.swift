@@ -4,6 +4,7 @@
 //
 //  Created by Arnav on 28/07/25.
 //
+import SpotifyiOS
 
 import SwiftUI
 
