@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WalkthroughView: View {
+
+    @AppStorage("hasSeenWalkthrough") private var hasSeenWalkthrough: Bool = false
+
     @State private var currentIndex: Int = 0
     private let display : [Titles] = [Titles(subheading2: "", heading: "Synkr..", description: "Keep your music in sync across platforms"), Titles(subheading2: "One Tap Transfer",  heading: "", description: "Choose source and destination, pick playlists, and you’re done."), Titles(subheading2: "Text To Playlists",  heading: "", description: "Have a list of songs in notes or chat? Let Synkr build your playlist.")]
     
@@ -76,7 +79,7 @@ struct WalkthroughView: View {
                 }
             } else {
                 buildButton(label: "Get Started") {
-                    // Perform some action
+                    hasSeenWalkthrough = true
                 }
             }
             Spacer().frame(height: 20)

@@ -17,32 +17,41 @@ struct SpotifyToYouTubeView: View {
     @State private var isLoading = true
 
     var body: some View {
+        ZStack {
+          
+            Color.clear
+                .background(.black.gradient)
+                .ignoresSafeArea()
 
-        VStack(spacing: 20) {
-            Text("Transferring to YouTube")
-                .font(.title2)
-                .bold()
+            VStack(spacing: 20) {
+                Text("Transferring to YouTube")
+                    .font(.title2)
+                    .bold()
+                    .foregroundColor(.white)
 
-            Text(selectedPlaylist.name)
-                .foregroundColor(.gray)
+                Text(selectedPlaylist.name)
+                    .foregroundColor(.white.opacity(0.7))
 
-            AsyncImage(url: selectedPlaylist.thumbnailURL) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
+                AsyncImage(url: selectedPlaylist.thumbnailURL) { image in
+                    image.resizable()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(width: 180, height: 180)
+                .cornerRadius(10)
+
+                if isLoading {
+                    ProgressView()
+                        .tint(.white)
+                }
+
+                Text(statusMessage)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .padding()
             }
-            .frame(width: 180, height: 180)
-            .cornerRadius(10)
-
-            if isLoading {
-                ProgressView()
-            }
-
-            Text(statusMessage)
-                .multilineTextAlignment(.center)
-                .padding()
+            .padding()
         }
-        .padding()
         .onAppear {
             transferToYouTube()
         }

@@ -17,38 +17,49 @@ struct SpotifyPlaylistPickerView: View {
     @State private var playlists: [SpotifyPlaylist] = []
     @State private var selectedPlaylist: SpotifyPlaylist?
 
-
     var body: some View {
- 
-        List(playlists) { playlist in
-            Button(action: {
-                selectedPlaylist = playlist
-               
-                print("Spotify Playlist selected: \(playlist.name)")
-                
-            }) {
-                HStack {
-                    AsyncImage(url: playlist.thumbnailURL) { image in
-                        image.resizable()
-                    } placeholder: {
-                        Color.gray
-                    }
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(8)
+        ZStack {
+      
+            Color.clear
+                .background(.black.gradient)
+                .ignoresSafeArea()
 
-                    Text(playlist.name)
+            List(playlists) { playlist in
+                Button(action: {
+                    selectedPlaylist = playlist
+                    print("Spotify Playlist selected: \(playlist.name)")
+                }) {
+                    HStack {
+                        AsyncImage(url: playlist.thumbnailURL) { image in
+                            image.resizable()
+                        } placeholder: {
+                            Color.gray
+                        }
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(8)
+
+                        Text(playlist.name)
+                            .foregroundColor(.white)
+                    }
                 }
+                .listRowBackground(Color.clear)
             }
-        }.sheet(item: $selectedPlaylist) {  playlist in
-        
-                SpotifyToYouTubeView(
-                    spotifyToken: spotifyToken,
-                    youtubeToken: youtubeToken,
-                    selectedPlaylist: playlist
-                )
-            
+            .scrollContentBackground(.hidden) 
         }
-        .navigationTitle("Select Spotify Playlist")
+        .sheet(item: $selectedPlaylist) { playlist in
+            SpotifyToYouTubeView(
+                spotifyToken: spotifyToken,
+                youtubeToken: youtubeToken,
+                selectedPlaylist: playlist
+            )
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Select Spotify Playlist")
+                    .font(.headline)
+                    .foregroundColor(.white)
+            }
+        }
         .onAppear {
             SpotifyService.shared.fetchUserPlaylists(token: token) { result in
                 playlists = result
@@ -56,6 +67,8 @@ struct SpotifyPlaylistPickerView: View {
         }
     }
 }
+
+
 
 #Preview {
     SpotifyPlaylistPickerView(

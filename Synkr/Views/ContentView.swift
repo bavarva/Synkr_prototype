@@ -9,11 +9,13 @@ enum FlowStep {
 
 struct ContentView: View {
     
+    @AppStorage("hasSeenWalkthrough") private var hasSeenWalkthrough: Bool = false
+    @State private var showMainView: Bool = false
     @State private var selectedYouTubePlaylist: YouTubePlaylist?
     @State private var showYouTubeToSpotifyView = false
     @State private var isYouTubePlaylistSelected = false
-    @State private var spotifyToken: String?
-    @State private var youtubeToken: String?
+    @AppStorage("spotifyToken") private var spotifyToken: String?
+    @AppStorage("youtubeToken") private var youtubeToken: String?
     @State private var source: Platform?
     @State private var destination: Platform?
     @State private var step: FlowStep = .login
@@ -23,27 +25,36 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            
-            contentForStep()
-                .toolbar {
-                    if step != .login {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Logout") {
-                                logout()
-                            }
-                        }
-                    }
-                    if step != .login && step != .source {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button(action: {
-                                step = .source
-                            }) {
-                                Label("Back", systemImage: "chevron.left")
-                            }
+            ZStack {
+                if hasSeenWalkthrough {
+                    contentForStep()
+                        
+                } else {
+                    WalkthroughView()
+                }
+            }
+        
+            .toolbar {
+                if hasSeenWalkthrough && step != .login {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Logout") {
+                            logout()
                         }
                     }
                 }
-        }.sheet(isPresented: $showYouTubeToSpotifySheet) {
+
+                if hasSeenWalkthrough && step != .login && step != .source {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            step = .source
+                        }) {
+                            Label("Back", systemImage: "chevron.left")
+                        }
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showYouTubeToSpotifySheet) {
             if let playlist = selectedYouTubePlaylist {
                 YouTubeToSpotifyView(
                     youtubeToken: youtubeToken!,
@@ -53,6 +64,7 @@ struct ContentView: View {
             }
         }
     }
+
     
     @ViewBuilder
     private func contentForStep() -> some View {
@@ -190,24 +202,22 @@ struct ContentView: View {
         VStack(spacing: 40) {
             Spacer()
 
-            VStack(spacing: 8) {
-                Text("Welcome to")
-                    .font(.title2)
-                    .foregroundColor(.secondary)
+            VStack {
                 
-                HStack(spacing: 10) {
-                    Image("SynkrLogo") // Make sure this is in your Assets
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 96, height: 96)
-                    
-                    Text("Synkr")
-                        .font(.system(size: 72, weight: .bold))
-                        .foregroundColor(.accentColor)
-                }
-            }
+                Text("Synkr..")
+                    .font(.custom("Always In My Heart", size: 162))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundColor(Color(red: 255/255, green: 242/255, blue: 224/255))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.1)
+                
+                Text("Keep your music in sync across platforms")
+                    .font(.title)
+                    .foregroundColor(.gray.opacity(0.6))
+                    .padding(.horizontal)
+            }.padding()
 
-            
+            Spacer().frame(height: 20)
  
             VStack(spacing: 12) {
                 if youtubeToken == nil {
@@ -236,19 +246,13 @@ struct ContentView: View {
             }
             .padding(.horizontal)
     
-            Text("Transfer playlists across platforms effortlessly.")
-                .font(.headline)
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+            
 
-            Spacer()
+            Spacer().frame(height: 20)
 
-            Text("Powered by XYZ")
-                .font(.caption)
-                .foregroundColor(.gray)
-        }
+    }
         .padding()
+        .background(.black.gradient)
     }
 
     
@@ -283,11 +287,12 @@ struct ContentView: View {
                     .fontWeight(.semibold)
             }
             .padding()
-            .frame(maxWidth: .infinity)
+            .fontWeight(.semibold)
+            .frame(width: 300, height: 50)
             .background(platform.color)
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 32))
-            .shadow(color: platform.color.opacity(0.3), radius: 8, x: 0, y: 4)
+            .foregroundColor(.black)
+            .clipShape(RoundedRectangle(cornerRadius: 30))
+            .shadow( radius: 4)
         }
         .padding(.horizontal)
     }
@@ -350,6 +355,7 @@ struct ContentView: View {
     }
 
 }
+
 
 #Preview{
     ContentView()

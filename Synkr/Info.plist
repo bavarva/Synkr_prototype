@@ -25,5 +25,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Always In My Heart.ttf</string>
+	</array>
 </dict>
 </plist>

@@ -4,7 +4,6 @@
 //
 //  Created by Arnav on 30/07/25.
 
-
 import SwiftUI
 
 struct YouTubeToSpotifyView: View {
@@ -18,26 +17,31 @@ struct YouTubeToSpotifyView: View {
     @State private var statusMessage: String?
     @State private var transferComplete = false
     
-  
     var body: some View {
-        
-            VStack() {
-               
-                
-                Text("Playlist: \(selectedPlaylist.snippet.title)")
-                    .foregroundColor(.gray)
-                
-                Text(" YouTube → Spotify")
+        ZStack {
+            Color.clear
+                .background(.black.gradient)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 20) {
+                Text("YouTube → Spotify")
                     .font(.largeTitle)
                     .bold()
+                    .foregroundColor(.white)
+                
+                Text("Playlist: \(selectedPlaylist.snippet.title)")
+                    .foregroundColor(.white.opacity(0.7))
                 
                 Text("Selected: \(selectedPlaylist.snippet.title)")
                     .font(.headline)
+                    .foregroundColor(.white)
                 
                 if isLoading {
                     ProgressView("Fetching videos...")
+                        .tint(.white)
+                        .foregroundColor(.white)
                 } else if transferComplete {
-                    Text(statusMessage ?? "✅ Playlist created successfully!")
+                    Text(statusMessage ?? " Playlist created successfully!")
                         .foregroundColor(.green)
                         .font(.title2)
                 } else {
@@ -57,14 +61,18 @@ struct YouTubeToSpotifyView: View {
                     
                     List(videoTitles, id: \.self) { title in
                         Text(title)
+                            .foregroundColor(.black) // Changed to black
                     }
+                    .scrollContentBackground(.hidden)
+                    .listRowBackground(Color.white.opacity(0.9)) // White-ish row background so black text is readable
                 }
             }
             .padding()
-            .onAppear {
-                fetchVideoTitles()
-            }
         }
+        .onAppear {
+            fetchVideoTitles()
+        }
+    }
     
     private func fetchVideoTitles() {
         YouTubeService.shared.fetchVideoTitlesFromPlaylist(
@@ -77,10 +85,10 @@ struct YouTubeToSpotifyView: View {
             }
         }
     }
-
+    
     private func transferPlaylist() {
         statusMessage = "Transferring..."
-
+        
         SpotifyService.shared.createPlaylistFromText(
             token: spotifyToken,
             name: selectedPlaylist.snippet.title,
@@ -93,7 +101,6 @@ struct YouTubeToSpotifyView: View {
         }
     }
 }
-
 
 #Preview {
 

@@ -17,32 +17,51 @@ struct YouTubePlaylistPickerView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                if isLoading {
-                    ProgressView("Loading playlists...")
-                        .padding()
-                }
+            ZStack {
+   
+                Color.clear
+                    .background(.black.gradient)
+                    .ignoresSafeArea()
 
-                List(playlists, id: \.id) { playlist in
-                    Button(action: {
-                        onSelect(playlist)
-                    }) {
-                        HStack {
-                            AsyncImage(url: playlist.thumbnailURL()) { image in
-                                image.resizable()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 60, height: 60)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                            Text(playlist.snippet.title)
-                                .font(.headline)
-                        }
+                VStack {
+                    if isLoading {
+                        ProgressView("Loading playlists...")
+                            .tint(.white)
+                            .foregroundColor(.white)
+                            .padding()
                     }
+
+                    List(playlists, id: \.id) { playlist in
+                        Button(action: {
+                            onSelect(playlist)
+                        }) {
+                            HStack {
+                                AsyncImage(url: playlist.thumbnailURL()) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                        .tint(.white)
+                                }
+                                .frame(width: 60, height: 60)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                                Text(playlist.snippet.title)
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        .listRowBackground(Color.clear)
+                    }
+                    .scrollContentBackground(.hidden)
                 }
             }
-            .navigationTitle("Select Playlist")
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Select Playlist")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                }
+            }
             .onAppear {
                 isLoading = true
                 YouTubeService.shared.fetchUserPlaylists(token: token) { playlists in
@@ -53,10 +72,9 @@ struct YouTubePlaylistPickerView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle()) 
     }
 }
-
-
 
 #Preview {
     YouTubePlaylistPickerView(token: "dummy") { playlist in

@@ -13,32 +13,39 @@ struct PlatformPickerView: View {
     let onSelect: (Platform) -> Void
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text(title)
-                .font(.largeTitle)
-                .bold()
+        ZStack {
+            Color.clear
+                .background(.black.gradient)
+                .ignoresSafeArea()
 
-            ForEach(Platform.allCases.filter { !exclude.contains($0) }, id: \.self) { platform in
-                Button(action: {
-                    onSelect(platform)
-                }) {
-                    HStack {
-                        Image(platform.logoName)
-                            .resizable()
-                            .frame(width: 24, height: 24)
+            VStack(spacing: 20) {
+                Text(title)
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white) 
 
-                        Text(platform.rawValue)
-                            .fontWeight(.semibold)
+                ForEach(Platform.allCases.filter { !exclude.contains($0) }, id: \.self) { platform in
+                    Button(action: {
+                        onSelect(platform)
+                    }) {
+                        HStack {
+                            Image(platform.logoName)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+
+                            Text(platform.rawValue)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.black)
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(platform.color)
+                        .clipShape(Capsule())
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(platform.color)
-                    .foregroundColor(.white)
-                    .clipShape(Capsule())
                 }
             }
+            .padding()
         }
-        .padding()
     }
 }
 

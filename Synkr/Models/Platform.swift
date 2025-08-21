@@ -22,9 +22,9 @@ enum Platform: String, CaseIterable {
 
     var color: Color {
         switch self {
-        case .spotify: return .green
-        case .youtube: return .red
-        case .text: return .blue
+        case .spotify: return Color(red: 255/255, green: 242/255, blue: 224/255)
+        case .youtube: return Color(red: 255/255, green: 242/255, blue: 224/255)
+        case .text: return Color(red: 255/255, green: 242/255, blue: 224/255)
         }
     }
 }
